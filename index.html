@@ -7,7 +7,10 @@
   <body>
     <button type="button" id="request_permission">iOS13モーションの許可</button><br>
 
-    <textarea id="log" rows="10" cols="50"></textarea>
+
+    <textarea id='deviceorientation' rows="10" cols="50"></textarea>
+    <textarea id='acceleration'rows="10" cols="50"></textarea>
+    <textarea id='accelerationIncludingGravity'rows="10" cols="50"></textarea>
         
     <script type="text/javascript">
         document.getElementById("request_permission").addEventListener("click", function(){
@@ -27,34 +30,47 @@
           }
         })
     </script>
-    <script src="/socket.io/socket.io.js"></script>
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
     <script>
-    const socket = io();
+    // const socket = io();
     const uid = Math.floor(Math.random() * 10000);
 
-    document.getElementById("log").value ="111";
+    let timestamp = {'orientation':0,
+  
+    'acceleration':0,
+    'accelerationIncludingGravity':0};
+
     window.addEventListener('deviceorientation', function(event) {
         const {alpha, beta, gamma} = event;
-        socket.emit("deviceorientation", {
-            uid: uid,
-            body: `${alpha}\t${beta}\t${gamma}`
-        });
+        // socket.emit("deviceorientation", {
+        //     uid: uid,
+        //     body: `${alpha}\t${beta}\t${gamma}`
+        // });
 
-        document.getElementById("log").value += `deviceorientation ${alpha}\t${beta}\t${gamma}`;
-    });
+        let now =  Date.now();
+        let rate = 1000/(now - timestamp.orientation);
+        document.getElementById("deviceorientation").value = `deviceorientation\n ${alpha}\n${beta}\n${gamma}\n${rate}`;
+          
+        timestamp.orientation = now;
+      });
     window.addEventListener('devicemotion', function(event) {
         const {x, y, z} = event.acceleration;
-        socket.emit("acceleration", {
-            uid: uid,
-            body: `${x}\t${y}\t${z}`
-        });
-        document.getElementById("log").value +=`acceleration ${x}\t${y}\t${z}`;
+        // socket.emit("acceleration", {
+        //     uid: uid,
+        //     body: `${x}\t${y}\t${z}`
+        // });
+        let now =  Date.now();
+        let rate = 1000/(now - timestamp.acceleration);
+        document.getElementById("acceleration").value =`acceleration\n ${x}\n${y}\n${z}\n${rate}`;
+        timestamp.acceleration = now;
+
         const {x: xg, y: yg, z: zg} = event.accelerationIncludingGravity;
-        socket.emit("accelerationIncludingGravity", {
-            uid: uid,
-            body: `${xg}\t${yg}\t${zg}`
-        });
-        document.getElementById("log").value +=`accelerationIncludingGravity ${xg}\t${yg}\t${zg}`;
+        // socket.emit("accelerationIncludingGravity", {
+        //     uid: uid,
+        //     body: `${xg}\t${yg}\t${zg}`
+        // });
+        
+        document.getElementById("accelerationIncludingGravity").value =`accelerationIncludingGravity\n ${xg}\n${yg}\n${zg}`;
     });
     </script>
   </body>
