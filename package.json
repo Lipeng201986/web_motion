@@ -1,0 +1,22 @@
+{
+    "name": "data-generator-from-mobile",
+    "version": "1.0.0",
+    "description": "generate datastream of smartphone sensor",
+    "main": "index.js",
+    "scripts": {
+      "start": "node index.js & lt -h https://serverless.social --port 3000 --subdomain `hostname`",
+      "local": "node index.js",
+      "lt": "lt -h https://serverless.social --port 3000"
+    },
+    "author": "@seiketkm",
+    "license": "MIT",
+    "dependencies": {
+      "express": "^4.17.1",
+      "netcat": "^1.5.0",
+      "socket.io": "^2.4.0",
+      "stream": "^0.0.2"
+    },
+    "devDependencies": {
+      "localtunnel": "^2.0.0"
+    }
+  }

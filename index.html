@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Sensor</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  </head>
+  <body>
+    <button type="button" id="request_permission">iOS13モーションの許可</button><br>
+
+    <textarea id="log" rows="10" cols="50"></textarea>
+        
+    <script type="text/javascript">
+        document.getElementById("request_permission").addEventListener("click", function(){
+          if (
+            DeviceMotionEvent &&
+            DeviceMotionEvent.requestPermission &&
+            typeof DeviceMotionEvent.requestPermission === 'function'
+          ) {
+            DeviceMotionEvent.requestPermission();
+          }
+          if (
+            DeviceOrientationEvent &&
+            DeviceOrientationEvent.requestPermission &&
+            typeof DeviceOrientationEvent.requestPermission === 'function'
+          ) {
+            DeviceOrientationEvent.requestPermission();
+          }
+        })
+    </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+    const socket = io();
+    const uid = Math.floor(Math.random() * 10000);
+
+    document.getElementById("log").value ="111";
+    window.addEventListener('deviceorientation', function(event) {
+        const {alpha, beta, gamma} = event;
+        socket.emit("deviceorientation", {
+            uid: uid,
+            body: `${alpha}\t${beta}\t${gamma}`
+        });
+
+        document.getElementById("log").value += `deviceorientation ${alpha}\t${beta}\t${gamma}`;
+    });
+    window.addEventListener('devicemotion', function(event) {
+        const {x, y, z} = event.acceleration;
+        socket.emit("acceleration", {
+            uid: uid,
+            body: `${x}\t${y}\t${z}`
+        });
+        document.getElementById("log").value +=`acceleration ${x}\t${y}\t${z}`;
+        const {x: xg, y: yg, z: zg} = event.accelerationIncludingGravity;
+        socket.emit("accelerationIncludingGravity", {
+            uid: uid,
+            body: `${xg}\t${yg}\t${zg}`
+        });
+        document.getElementById("log").value +=`accelerationIncludingGravity ${xg}\t${yg}\t${zg}`;
+    });
+    </script>
+  </body>
+</html>
