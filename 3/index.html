@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no'>
+    <meta name='mobile-web-app-capable' content='yes'>
+    <meta name='apple-mobile-web-app-capable' content='yes'>
+    <title></title>
+
+    <style type='text/css'>
+        body {
+            background-color: #144172;
+        }
+    </style>
+     <!-- <script src="./js/xr-model.js"></script> -->
+  </head>
+
+<body>
+
+    <h1>model to unity</h1>
+    <p>this is a demo test for import a 3d model from web page to Unity</p>
+    <xr-model src="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BoxVertexColors/glTF-Embedded/BoxVertexColors.gltf" position="0 0 0" rotation="0 90 0"></xr-model>
+
+    <p>the model element is upper from this</p>
+
+
+    <script type="module">
+        import XRModel from './xr-model.js'
+    </script>
+</body>
+
+</html>
